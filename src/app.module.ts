@@ -5,6 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
+import { RideController } from './ride/ride.controller';
+import { RideModule } from './ride/ride.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { LocationModule } from './location/location.module';
     AuthModule,
     UserModule,
     LocationModule,
+    RideModule,
   ],
+  controllers: [RideController],
 })
 export class AppModule { }
