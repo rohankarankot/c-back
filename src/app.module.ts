@@ -5,8 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
-import { RideController } from './ride/ride.controller';
-import { RideModule } from './ride/ride.module';
+import { JourneyController } from './journey/journey.controller';
+import { JourneyModule } from './journey/journey.module';
+import { HealthController } from './health/health.controller';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronService } from './cron/cron.service';
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import { RideModule } from './ride/ride.module';
       envFilePath: ['.env'],
     }),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ScheduleModule.forRoot(), ConfigModule],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get('DATABASE_URI'),
       }),
@@ -35,8 +38,9 @@ import { RideModule } from './ride/ride.module';
     AuthModule,
     UserModule,
     LocationModule,
-    RideModule,
+    JourneyModule,
   ],
-  controllers: [RideController],
+  controllers: [JourneyController, HealthController],
+  providers: [CronService],
 })
 export class AppModule { }
