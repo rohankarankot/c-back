@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
 import axios from 'axios';
+import { transformAutocompleteResults, transformLocationDetails } from 'src/helpers/location.transformer';
 
 @Injectable()
 export class LocationService {
-
-
 
     async getLocationDetailsByPin(@Query() req): Promise<any> {
         const { lat, long } = req;
@@ -17,40 +16,33 @@ export class LocationService {
 
         try {
             const response = await axios.get(url);
-            let transformedData = {
-                country: "",
-                state: "",
-                city: "",
-                pincode: "",
-                latitude: null,
-                longitude: null,
-            };
-
-            // Extract latitude and longitude from the geometry.location field
-            const location = response.data.results[0].geometry.location;
-            transformedData.latitude = location.lat;
-            transformedData.longitude = location.lng;
-
-            // Loop through address_components to extract the relevant data
-            response.data.results[0].address_components.forEach(component => {
-                if (component.types.includes("country")) {
-                    transformedData.country = component.long_name;
-                }
-                if (component.types.includes("administrative_area_level_1")) {
-                    transformedData.state = component.long_name;
-                }
-                if (component.types.includes("locality")) {
-                    transformedData.city = component.long_name;
-                }
-                if (component.types.includes("postal_code")) {
-                    transformedData.pincode = component.long_name;
-                }
-            });
-
+            const transformedData = transformLocationDetails(response.data)
             return transformedData;
         } catch (error) {
             console.error('Error fetching location details:', error);
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getlocationAutoComplete(@Query() query): Promise<any> {
+        const { lat, long, input } = query;
+
+        // Basic validation
+        if (!lat || !long || !input) {
+            throw new HttpException('Missing required parameters', HttpStatus.BAD_REQUEST);
+        }
+
+        // Construct the URL with encoded input
+        const url = `${process.env.OLA_MAPS_URI}/places/v1/autocomplete?input=${encodeURIComponent(input)}&location=${lat}%2C${long}&api_key=${process.env.OLA_API_KEY}`;
+
+        try {
+            // Fetch data from the API
+            const response = await axios.get(url);
+            const transformedData = transformAutocompleteResults(response.data);
+            return transformedData;
+        } catch (error) {
+            console.error('Error fetching places details:', error.message || error);
+            throw new HttpException('Error fetching places details', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

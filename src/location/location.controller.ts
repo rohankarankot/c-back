@@ -11,4 +11,10 @@ export class LocationController {
     ) {
         return this.locationService.getLocationDetailsByPin(req);
     }
+    @Get("autocomplete")
+    getlocationAutocomplete(
+        @Query() req
+    ) {
+        return this.locationService.getlocationAutoComplete(req);
+    }
 }
