@@ -9,6 +9,13 @@ export class Ride {
     @Prop({ required: true })
     to: string;
 
+
+    @Prop({ required: true })
+    postedBy: string;
+
+    @Prop({ required: true })
+    city: string;
+
     @Prop({ required: true })
     from: string;
 
