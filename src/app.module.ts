@@ -5,11 +5,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
-import { JourneyController } from './journey/journey.controller';
-import { JourneyModule } from './journey/journey.module';
 import { HealthController } from './health/health.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronService } from './cron/cron.service';
+import { RideController } from './ride/ride.controller';
+import { RideService } from './ride/ride.service';
+import { RideModule } from './ride/ride.module';
 
 @Module({
   imports: [
@@ -38,9 +39,9 @@ import { CronService } from './cron/cron.service';
     AuthModule,
     UserModule,
     LocationModule,
-    JourneyModule,
+    RideModule,
   ],
-  controllers: [JourneyController, HealthController],
-  providers: [CronService],
+  controllers: [HealthController, RideController],
+  providers: [CronService, RideService],
 })
 export class AppModule { }
