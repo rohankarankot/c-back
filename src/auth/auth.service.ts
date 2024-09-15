@@ -45,7 +45,6 @@ export class AuthService {
                     avatar: payload?.picture
                 });
                 await user.save();
-                console.log('user: ', user);
                 token = this.jwtService.sign({
                     id: user._id,
                 });
