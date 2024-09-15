@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Ride } from 'src/schema/ride.schema';
@@ -12,7 +12,6 @@ export class RideService {
     ) { }
 
     async createNewRide(body: any, user: User): Promise<Ride> {
-        console.log('user: ', user);
 
         const { to, from, date, time, maxCapacity, city } = body;
 
@@ -42,5 +41,22 @@ export class RideService {
             console.error('Error creating new ride:', error);
             throw new BadRequestException('Error creating new ride');
         }
+    }
+
+
+    async getride(@Query() query): Promise<any> {
+        const { city } = query;
+        if (!city) {
+            throw new BadRequestException('provide city');
+        }
+        // Create a case-insensitive regular expression
+        const cityRegex = new RegExp(city, 'i');
+
+        const rides = await this.rideModel.find({ city: cityRegex }).exec();
+        if (!rides.length) {
+            throw new NotFoundException('No rides found for the specified city');
+        }
+
+        return rides;
     }
 }
