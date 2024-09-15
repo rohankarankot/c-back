@@ -16,6 +16,9 @@ export class Ride {
     @Prop({ required: true })
     city: string;
 
+    @Prop({ required: false })
+    description: string;
+
     @Prop({ required: true })
     from: string;
 
@@ -24,6 +27,9 @@ export class Ride {
 
     @Prop({ required: true })
     date: Date;
+
+    @Prop({ required: true })
+    creatorImg: string;
 
     @Prop({ required: true })
     time: string; // Or use Date if you want to store both date and time together

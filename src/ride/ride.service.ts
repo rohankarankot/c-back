@@ -13,7 +13,7 @@ export class RideService {
 
     async createNewRide(body: any, user: User): Promise<Ride> {
 
-        const { to, from, date, time, maxCapacity, city } = body;
+        const { to, from, date, time, maxCapacity, city, description } = body;
 
         if (!to || !from || !date || !time || !maxCapacity || !city) {
             throw new BadRequestException('Some values are missing');
@@ -31,8 +31,10 @@ export class RideService {
             time,
             maxCapacity,
             city,
+            description,
             createdBy: user.id,
             postedBy: user.firstName,
+            creatorImg: user.avatar
         });
 
         try {
