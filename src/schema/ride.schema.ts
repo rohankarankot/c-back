@@ -9,7 +9,6 @@ export class Ride {
     @Prop({ required: true })
     to: string;
 
-
     @Prop({ required: true })
     postedBy: string;
 
@@ -26,7 +25,7 @@ export class Ride {
     maxCapacity: number;
 
     @Prop({ required: true })
-    date: Date;
+    date: string;
 
     @Prop({ required: true })
     creatorImg: string;
