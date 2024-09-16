@@ -12,7 +12,7 @@ export class RideService {
     ) { }
 
     async createNewRide(body: any, user: User): Promise<Ride> {
-
+        
         const { to, from, date, time, maxCapacity, city, description } = body;
 
         if (!to || !from || !date || !time || !maxCapacity || !city) {
@@ -34,7 +34,8 @@ export class RideService {
             description,
             createdBy: user.id,
             postedBy: user.firstName,
-            creatorImg: user.avatar
+            creatorImg: user.avatar,
+            contact: user.mobile
         });
 
         try {

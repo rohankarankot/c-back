@@ -25,6 +25,9 @@ export class Ride {
     maxCapacity: number;
 
     @Prop({ required: true })
+    contact: number;
+
+    @Prop({ required: true })
     date: string;
 
     @Prop({ required: true })
