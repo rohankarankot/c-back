@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { RideService } from './ride.service';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
@@ -20,6 +20,34 @@ export class RideController {
     getride(
         @Query() req
     ) {
-        return this.rideService.getride(req);
+        return this.rideService.getRides(req);
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Get("myrides")
+    myRides(
+        @Req() req,
+        @Query() query
+    ) {
+        return this.rideService.myRides(req.user, query);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    // @Get("requestride")
+    // requestRide(
+    //     @Req() req,
+    //     @Query() query
+    // ) {
+    //     return this.rideService.requestRide(req.user, query);
+    // }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch("completeride")
+    completeRide(
+        @Req() req,
+        @Query() query
+    ) {
+        return this.rideService.completeRide(req.user, query);
     }
 }

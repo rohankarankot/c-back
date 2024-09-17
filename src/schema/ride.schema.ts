@@ -4,8 +4,16 @@ import { User } from "./user.schema"; // Adjust the import path as necessary
 
 export type RideDocument = Ride & Document;
 
+export enum RideStatus {
+    CANCELLED = 'cancelled',
+    COMPLETED = 'completed',
+    ACTIVE = 'active',
+}
+
 @Schema({ timestamps: true })
+
 export class Ride {
+
     @Prop({ required: true })
     to: string;
 
@@ -26,6 +34,15 @@ export class Ride {
 
     @Prop({ required: true })
     contact: number;
+
+    @Prop({ required: true })
+    active: boolean;
+
+    @Prop({ required: true, enum: RideStatus, default: RideStatus.ACTIVE })
+    status: RideStatus;
+
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+    joinedUsers: Types.ObjectId[];
 
     @Prop({ required: true })
     date: string;
