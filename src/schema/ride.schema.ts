@@ -41,9 +41,6 @@ export class Ride {
     @Prop({ required: true, enum: RideStatus, default: RideStatus.ACTIVE })
     status: RideStatus;
 
-    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-    joinedUsers: Types.ObjectId[];
-
     @Prop({ required: true })
     date: string;
 
@@ -51,7 +48,10 @@ export class Ride {
     creatorImg: string;
 
     @Prop({ required: true })
-    time: string; // Or use Date if you want to store both date and time together
+    time: string;
+
+    @Prop({ type: [Types.ObjectId], ref: 'User', default: [] })
+    joinedUsers: Types.ObjectId[];
 
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     createdBy: User;

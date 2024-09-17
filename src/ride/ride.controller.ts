@@ -33,14 +33,14 @@ export class RideController {
         return this.rideService.myRides(req.user, query);
     }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Get("requestride")
-    // requestRide(
-    //     @Req() req,
-    //     @Query() query
-    // ) {
-    //     return this.rideService.requestRide(req.user, query);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get("joinrequest")
+    requestRide(
+        @Req() req,
+        @Query() query
+    ) {
+        return this.rideService.requestToJoinRide(req.user, query);
+    }
 
     @UseGuards(JwtAuthGuard)
     @Patch("completeride")

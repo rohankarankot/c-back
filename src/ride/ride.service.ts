@@ -35,6 +35,9 @@ export class RideService {
     myRides(user: User, query) {
         return this.rideRequestService.myRides(user, query);
     }
+    requestToJoinRide(user: User, query) {
+        return this.rideRequestService.requestToJoinRide(user, query.rideId);
+    }
 
     completeRide(user: any, query: any) {
         return this.rideCompleteService.completeRide(user, query);
